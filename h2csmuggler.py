@@ -46,7 +46,8 @@ def establish_tcp_connection(proxy_url):
 
     retSock = sock
     if proxy_url.scheme == "https":
-        retSock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLS)
+        ctx=ssl._create_unverified_context()
+        retSock = ctx.wrap_socket(sock,server_hostname=proxy_url.hostname)
 
     retSock.settimeout(MAX_TIMEOUT)
     retSock.connect(connect_args)
